@@ -1,0 +1,116 @@
+--------user_info-------------
+CREATE TABLE user_info (
+  id INT AUTO_INCREMENT NOT NULL,
+  userName VARCHAR(16) NOT NULL,
+  password VARCHAR(16) NOT NULL,
+  realName VARCHAR(8) NOT NULL,
+  sex VARCHAR(4) NOT NULL,
+  address VARCHAR(255) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  ragDate DATE NOT NULL,
+  status INT NOT NULL,
+  PRIMARY KEY(id)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+--------admin_info-------------
+CREATE TABLE admin_info (
+  id INT AUTO_INCREMENT NOT NULL,
+  name VARCHAR(16) NOT NULL,
+  pwd VARCHAR(50) NOT NULL,
+  PRIMARY KEY(id)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+--------type-------------
+CREATE TABLE type (
+  id INT AUTO_INCREMENT NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  PRIMARY KEY(id)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+--------product_info-------------
+CREATE TABLE product_info (
+  id INT AUTO_INCREMENT NOT NULL,
+  code VARCHAR(16) NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  tid INT NOT NULL,
+  brand VARCHAR(20) NOT NULL,
+  pic VARCHAR(255) NOT NULL,
+  num INT NOT NULL,
+  price DECIMAL(10,0) NOT NULL,
+  intro LONGTEXT NOT NULL,
+  status INT NOT NULL,
+  PRIMARY KEY(id)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+--------order_info-------------
+CREATE TABLE order_info (
+  id INT AUTO_INCREMENT NOT NULL,
+  uid INT NOT NULL,
+  status VARCHAR(16) NOT NULL,
+  ordertime DATETIME NOT NULL,
+  orderprice DECIMAL(8,2) NOT NULL,
+  PRIMARY KEY(id)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+--------order_detail-------------
+CREATE TABLE order_detail (
+  id INT AUTO_INCREMENT NOT NULL,
+  oid INT NOT NULL,
+  pid INT NOT NULL,
+  num INT NOT NULL,
+  PRIMARY KEY(id)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+
+--------functions-------------
+CREATE TABLE functions (
+  id INT AUTO_INCREMENT NOT NULL,
+  name VARCHAR(20) NOT NULL,
+  parentid INT NOT NULL,
+  url VARCHAR(50) NOT NULL,
+  isleaf BIT NOT NULL,
+  nodeorder INT NOT NULL,
+  PRIMARY KEY(id)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+--------powers-------------
+CREATE TABLE powers (
+  aid INT NOT NULL,
+  fid INT NOT NULL,
+  PRIMARY KEY(aid,fid)
+) Engine=INNODB DEFAULT CHARSET=UTF8;
+------------------------------------
+
+ALTER TABLE product_info
+ADD CONSTRAINT fk_type_id
+FOREIGN KEY (tid)
+REFERENCES type (id);
+
+
+
+ALTER TABLE order_info
+ADD CONSTRAINT fk_user_id
+FOREIGN KEY (uid)
+REFERENCES user_info (id);
+
+
+ALTER TABLE order_detail
+ADD CONSTRAINT fk_order_id
+FOREIGN KEY (oid)
+REFERENCES order_info (id);
+
+
+ALTER TABLE order_detail
+ADD CONSTRAINT fk_product_id
+FOREIGN KEY (pid)
+REFERENCES product_info (id);
+
+
+
